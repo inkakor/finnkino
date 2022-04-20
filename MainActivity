@@ -102,14 +102,10 @@ public class MainActivity extends AppCompatActivity {
                    @Override
                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                        i1 = i1 + 1;
-                       String date = i2+"."+i1+"."+i;
                        String d = String.format("%02d", i2);
                        String m = String.format("%02d", i1);
-                       String y = String.format("%02d", i);
-                       String date1 = d+"."+m+"."+y;
+                       String date1 = d+"."+m+"."+i;
                        editTextDate.setText(date1);
-                       //System.out.println(date1);
-
                    }
                }, year, month,day);
                datePickerDialog.show();
