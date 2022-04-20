@@ -9,7 +9,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -57,10 +60,11 @@ public class MovieTheater {
         }
     }
 
-    public void readDateXML(String theater, Editable date){
-        //Etsi teatterin nimeä vastaava id
+    //This method reads XML-file, that has movie information. Parses movies and adds them to a list.
+    public void readDateXML(String theater, Editable date, Editable time){
         String id = "";
         String s1 = "";
+        System.out.println("##########" + time);
         for (int i = 0; i < movieTheaters.size(); i++) {
             if(theater.equals(movieTheaters.get(i).name)){
                 id = movieTheaters.get(i).id;
@@ -69,6 +73,7 @@ public class MovieTheater {
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             String url = "https://www.finnkino.fi/xml/Schedule/?area=" + id + "&dt=" + date;
+            System.out.println("###########"+url);
             Document doc = builder.parse(url);
             doc.getDocumentElement().normalize();
             System.out.println("root element: " + doc.getDocumentElement().getNodeName());
@@ -84,13 +89,25 @@ public class MovieTheater {
                     //System.out.println(movieID);
                     movieName = element.getElementsByTagName("Title").item(0).getTextContent();
                     movieTime = element.getElementsByTagName("dttmShowStart").item(0).getTextContent();
-                    String time = movieTime.substring(movieTime.length() - 8, movieTime.length() - 3);
-                    s1 = movieName + "    " + time;
-                    movieList.add(s1);
+                    
+                    //Parses time = removes seconds etc.
+                    String time_movie = movieTime.substring(movieTime.length() - 8, movieTime.length() - 3);
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+
+                    //time = t1 = time chosen by user, time_movie = t2 = movie time
+                    Date t1 = sdf.parse(String.valueOf(time));
+                    Date t2 = sdf.parse(time_movie);
+
+                    //If user's time is before movie time, movie is added to the list 
+                    if(t1.before(t2)){
+                        s1 = movieName + "    " + time_movie;
+                        movieList.add(s1);
+                    }
                 }
             }
             System.out.println(url);
-        } catch (IOException | SAXException | ParserConfigurationException e){
+        } catch (IOException | SAXException | ParserConfigurationException | ParseException e){
             System.out.println("VIRHE");
             e.printStackTrace();
         } finally {
