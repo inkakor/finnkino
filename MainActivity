@@ -30,6 +30,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -102,14 +103,20 @@ public class MainActivity extends AppCompatActivity {
                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                        i1 = i1 + 1;
                        String date = i2+"."+i1+"."+i;
-                       editTextDate.setText(date );
+                       String d = String.format("%02d", i2);
+                       String m = String.format("%02d", i1);
+                       String y = String.format("%02d", i);
+                       String date1 = d+"."+m+"."+y;
+                       editTextDate.setText(date1);
+                       //System.out.println(date1);
 
                    }
                }, year, month,day);
                datePickerDialog.show();
            }
-       });                                          
+       });
         movieTheater.readXML();
+
         ArrayAdapter spinnerAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, movieTheater.movieTheaters);
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -128,8 +135,10 @@ public class MainActivity extends AppCompatActivity {
     public void showMovies(View v){
         String chosenItem = spinner.getSelectedItem().toString();
         Editable chosenDate = editTextDate.getText();
-        String chosenDate1 = chosenDate.toString();
-        movieTheater.readDateXML(chosenItem, chosenDate1);
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        //String chosenDate1 = dateFormat.format(chosenDate);
+        //System.out.println(chosenDate1);
+        movieTheater.readDateXML(chosenItem, chosenDate);
         ArrayAdapter listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,movieTheater.movieList);
         listView.setAdapter(listAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
