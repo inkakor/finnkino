@@ -1,5 +1,7 @@
 package com.example.viikko9pt2;
 
+import android.text.Editable;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -25,6 +27,7 @@ public class MovieTheater {
 
     public void readXML(){
         try {
+            System.out.println("###########READXML########");
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             String url = "https://www.finnkino.fi/xml/TheatreAreas/";
             Document doc = builder.parse(url);
@@ -54,7 +57,7 @@ public class MovieTheater {
         }
     }
 
-    public void readDateXML(String theater, String date){
+    public void readDateXML(String theater, Editable date){
         //Etsi teatterin nimeä vastaava id
         String id = "";
         String s1 = "";
@@ -65,9 +68,7 @@ public class MovieTheater {
         }
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            //Tähän muutetaan stringiä
-            String date1 = String.format(date, "##.##.####");
-            String url = "https://www.finnkino.fi/xml/Schedule/?area=" + id + "&dt=" + date1;
+            String url = "https://www.finnkino.fi/xml/Schedule/?area=" + id + "&dt=" + date;
             Document doc = builder.parse(url);
             doc.getDocumentElement().normalize();
             System.out.println("root element: " + doc.getDocumentElement().getNodeName());
