@@ -29,6 +29,7 @@ import org.xml.sax.SAXException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -93,8 +94,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
        editTextDate.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
@@ -123,18 +122,15 @@ public class MainActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
-
-
     }
-// Tää ottaa tiedot, sit ne haetaan tuolla movietheater luokassa jossa selviää mitä elokuvia näytetään.
+/* Takes information from spinner, editTextDate and editTextTime and sends them to readDateXML -method.
+Prints movies to ListView*/
 
     public void showMovies(View v){
         String chosenItem = spinner.getSelectedItem().toString();
         Editable chosenDate = editTextDate.getText();
-        //SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        //String chosenDate1 = dateFormat.format(chosenDate);
-        //System.out.println(chosenDate1);
-        movieTheater.readDateXML(chosenItem, chosenDate);
+        Editable chosenTime = editTextTime.getText();
+        movieTheater.readDateXML(chosenItem, chosenDate, chosenTime);
         ArrayAdapter listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,movieTheater.movieList);
         listView.setAdapter(listAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -146,16 +142,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+//Tää on vähä turha, mut vaa printtaa tiedot näytölle.
     public void printInformation(View v){
         String chosenItem = spinner.getSelectedItem().toString();
         String chosenMovie = (String) listView.getItemAtPosition(index);
         Editable chosenDate = editTextDate.getText();
-        Editable chosenTime = editTextTime.getText();
+        //Editable chosenTime = editTextTime.getText();
         if(index == 1000000000){
             print.setText("Choose a movie first!");
         }else{
-            //Toki tästä vois parsia ton elokuvan ajan pois
-            print.setText("Your place and movie of choice: " + chosenItem + " " + chosenMovie + "\nTime and date: " + chosenDate + " " + chosenTime);
+            print.setText("Your place and movie of choice: " + chosenItem + " " + chosenMovie + "\nTime: " + chosenDate);
         }
     }
 
