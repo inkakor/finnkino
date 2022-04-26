@@ -1,0 +1,25 @@
+package com.example.harjoitustyoolio;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class ReviewList implements Serializable {
+    public String mName;
+    public float rate;
+    public String review;
+    public String date;
+    public ReviewList(String mName, String date, float rate, String review){
+        this.mName = mName;
+        this.rate = rate;
+        this.review = review;
+        this.date = date;
+    }
+    //TARVITAANKO TOSTRING TOIMINTOA TÄSSÄÄÄ
+    //A toString() is an in-built method in Java that returns the value given to it in string format.
+    // Hence, any object that this method is applied on, will then be returned as a string object.
+
+    //@Override
+    //public String toString() {
+        //return name;
+    //}
+}
