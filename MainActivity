@@ -1,3 +1,4 @@
+
 package com.example.harjoitustyoolio;
 
 import androidx.annotation.NonNull;
@@ -27,7 +28,6 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -74,7 +74,8 @@ public class MainActivity extends AppCompatActivity {
     //DatePickerDialog.OnDateSetListener setListener;
     Theatres theatres = new Theatres();
 
-    ArrayList<String> dateList = new ArrayList<>();
+    ArrayList<String> movies = new ArrayList<>();
+    ArrayList<ReviewList > watchedMovies = new ArrayList<>();
 
     private String file = "test2.txt";
 
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-         context = MainActivity.this;
+        context = MainActivity.this;
 
         System.out.println("KANSION SIJAINTI " + context.getFilesDir());
 
@@ -121,11 +122,20 @@ public class MainActivity extends AppCompatActivity {
                     //startActivity vaihtaa sitä activiteettiä mikä on aktiivisena poistaen vanhan muistista
                     //Intent myintent = new Intent(MainActivity.this, NewActivity.class);
                     //StartActivity(myintent);
-                    Intent myintent = new Intent(context, Login.class);
-                    context.startActivity(myintent);
+                    Intent rateMovies = new Intent(context, Review.class);
+                    Bundle bundle = new Bundle();
+                    Bundle bundle1 = new Bundle();
+                    bundle.putSerializable("movies", movies);
+                    bundle1.putSerializable("watchedmovies",watchedMovies);
+                    rateMovies.putExtras(bundle);
+                    rateMovies.putExtras(bundle1);
+                    //startActivity(rateMovies);
+                    context.startActivity(rateMovies);
                 }
                 else if(id == R.id.logOut){
                     Toast.makeText(MainActivity.this, "Kirjaudu ulos", Toast.LENGTH_SHORT).show();
+                    Intent logout = new Intent(context, Login.class);
+                    context.startActivity(logout);
                 }
                 return true;
             }
@@ -208,7 +218,6 @@ Prints movies to ListView*/
         Editable chosenDate = editTextDate.getText();
         Editable chosenTime = editTextTime.getText();
         if(String.valueOf(chosenDate).equals("Pick date")) {
-            System.out.println("PÄIVÄÄ EI VALITTU");
             Toast.makeText(MainActivity.this, "Choose a date first!", Toast.LENGTH_SHORT).show();
         }else if(String.valueOf(chosenTime).equals("Pick time")){
             Toast.makeText(MainActivity.this, "Choose a time first!", Toast.LENGTH_SHORT).show();
@@ -230,18 +239,26 @@ Prints movies to ListView*/
     }
 
     public void saveMovieToList(View v){
-        String writtenReview = "Give an review";
+        String writtenReview = "";
         int numberReview = 0;
-        //ArrayList<MovieList> watchedMovies = new ArrayList<MovieList>();
-        ArrayList<String> movies = new ArrayList<>();
         String chosenMovie = (String) listView.getItemAtPosition(index);
+        String chosenMovie1 = chosenMovie.substring(0, chosenMovie.length()-9);
         Editable chosenDate = editTextDate.getText();
-        //watchedMovies.add(new MovieList(chosenMovie, chosenDate, writtenReview, numberReview));
-        movies.add(chosenMovie);
+        String chosenDate1 = String.valueOf(chosenDate);
+        watchedMovies.add(new ReviewList(chosenMovie1, chosenDate1, numberReview, writtenReview));
+        movies.add(chosenMovie1);
         //Nää vois viedä johonkin metodiin, jossa movies menee spinneriin, ja sit watchedMovies muihin tietoihin.
         //Printtaaminen ja tallentaminen if (.equals()) homman kautta
 
     }
+
+    /*public void sendList(View v){
+        Intent intent1 = new Intent(MainActivity.this, Review.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("movies", movies);
+        intent1.putExtras(bundle);
+        startActivity(intent1);
+    }*/
 
     /*Checks if movies shown on chosen date are archived. If not, then adds them to a file.*/
 
@@ -322,5 +339,6 @@ Prints movies to ListView*/
         }
         return n;
     }
+
 
 }
