@@ -1,0 +1,100 @@
+package com.example.harjoitustyoolio;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.Editable;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RatingBar;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+
+public class Review extends AppCompatActivity {
+    ArrayList<ReviewList > watchedMovies = new ArrayList<>();
+    ArrayList<String> movies = new ArrayList<>();
+
+    private EditText reviewText;
+    private Spinner movieSpinner;
+    private RatingBar ratingBar;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_review);
+
+        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        Button rateButton = (Button) findViewById(R.id.reviewB);
+        final TextView rateStars = (TextView) findViewById(R.id.textView2);
+        reviewText = (EditText)findViewById(R.id.writtenReview);
+        Button submitButton = (Button) findViewById(R.id.submitB);
+        movieSpinner = (Spinner) findViewById(R.id.reviewS);
+        final TextView title = (TextView) findViewById(R.id.textView3);
+
+        Bundle bundleObject = getIntent().getExtras();
+        movies = (ArrayList<String>) bundleObject.getSerializable("movies");
+        watchedMovies = (ArrayList<ReviewList>) bundleObject.getSerializable("watchedmovies");
+
+        //configure();
+
+
+
+        // tähän lista jossa katsotut elokuvat ovat
+        //spinner that shows a list of watched movies: user chooses one of the movies and rates it with stars/written review
+        ArrayAdapter spinnerAdapter = new ArrayAdapter<>(Review.this, android.R.layout.simple_spinner_dropdown_item, movies);
+        movieSpinner.setAdapter(spinnerAdapter);
+        movieSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
+
+        //rating watched movies with stars from 1 to 5
+        rateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rateStars.setText("Your rating is: "+ratingBar.getRating());
+                //tähän toiminto joka lisää tekstin listaan?
+            }
+        });
+
+
+        //written review on the movie
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //tähän toiminto joka lisää tekstin listaan painamalla submit buttonia
+            }
+        });
+    }
+    
+    public void saveRatings(View v){
+        String date = "";
+        Editable review;
+        int index = 0;
+        float rate;
+        String chosenItem = movieSpinner.getSelectedItem().toString();
+        for (int i = 0; i < watchedMovies.size(); i++) {
+            if(chosenItem.equals(watchedMovies.get(i).mName)){
+                date = watchedMovies.get(i).date;
+                index = i;
+                break;
+            }
+        }
+        rate = ratingBar.getRating();
+        review = reviewText.getText();
+        String review1 = String.valueOf(review);
+        watchedMovies.set(index, new ReviewList(chosenItem, date, rate, review1));
+    }
+
+}
