@@ -3,8 +3,11 @@ package com.example.harjoitustyoolio;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,33 +18,31 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Review extends AppCompatActivity {
     ArrayList<ReviewList > watchedMovies = new ArrayList<>();
-    ArrayList<String> movies = new ArrayList<>();
+    ArrayList<String> movies;
 
     private EditText reviewText;
     private Spinner movieSpinner;
     private RatingBar ratingBar;
     private TextView rateStars;
 
-   @Override
-    protected void onSaveInstanceState(Bundle outState){
-        super.onSaveInstanceState(outState);
-        outState.putStringArrayList("movies", movies);
-        outState.putSerializable("watchedmovies", watchedMovies);
-    }
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState){
-        movies = savedInstanceState.getStringArrayList("movies");
-        watchedMovies = (ArrayList<ReviewList>) savedInstanceState.getSerializable("watchedmovies");
-    }
-    
+    SharedPreferences shared;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
+
+        if(movies == null){
+            movies = new ArrayList<>();
+        }
+
+        shared = getSharedPreferences("App_settings", MODE_PRIVATE);
 
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
         Button rateButton = (Button) findViewById(R.id.reviewB);
@@ -54,6 +55,7 @@ public class Review extends AppCompatActivity {
         Bundle bundleObject = getIntent().getExtras();
         movies = (ArrayList<String>) bundleObject.getSerializable("movies");
         watchedMovies = (ArrayList<ReviewList>) bundleObject.getSerializable("watchedmovies");
+
 
         //configure();
 
@@ -93,6 +95,29 @@ public class Review extends AppCompatActivity {
 
          */
     }
+
+    /*
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("movies", movies);
+        for (int i = 0; i < movies.size(); i++) {
+            System.out.println("PRINT");
+            System.out.println(movies.get(i));
+        }
+        outState.putSerializable("watchedmovies", watchedMovies);
+    }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState){
+        movies = (ArrayList<String>) savedInstanceState.getSerializable("movies");
+        for (int i = 0; i < movies.size(); i++) {
+            System.out.println("PRINT");
+            System.out.println(movies.get(i));
+        }
+        watchedMovies = (ArrayList<ReviewList>) savedInstanceState.getSerializable("watchedmovies");
+    }
+
+     */
 
 
     public void setRatings(View v){
