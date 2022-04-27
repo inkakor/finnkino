@@ -23,6 +23,20 @@ public class Review extends AppCompatActivity {
     private EditText reviewText;
     private Spinner movieSpinner;
     private RatingBar ratingBar;
+    private TextView rateStars;
+
+   @Override
+    protected void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putStringArrayList("movies", movies);
+        outState.putSerializable("watchedmovies", watchedMovies);
+    }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState){
+        movies = savedInstanceState.getStringArrayList("movies");
+        watchedMovies = (ArrayList<ReviewList>) savedInstanceState.getSerializable("watchedmovies");
+    }
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +45,7 @@ public class Review extends AppCompatActivity {
 
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
         Button rateButton = (Button) findViewById(R.id.reviewB);
-        final TextView rateStars = (TextView) findViewById(R.id.textView2);
+        rateStars = (TextView) findViewById(R.id.textView2);
         reviewText = (EditText)findViewById(R.id.writtenReview);
         Button submitButton = (Button) findViewById(R.id.submitB);
         movieSpinner = (Spinner) findViewById(R.id.reviewS);
@@ -58,7 +72,6 @@ public class Review extends AppCompatActivity {
             }
         });
 
-
         //rating watched movies with stars from 1 to 5
         rateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,15 +83,47 @@ public class Review extends AppCompatActivity {
 
 
         //written review on the movie
+        /*
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //tähän toiminto joka lisää tekstin listaan painamalla submit buttonia
             }
         });
+
+         */
+    }
+
+
+    public void setRatings(View v){
+        String chosenItem = movieSpinner.getSelectedItem().toString();
+        System.out.println(chosenItem);
+        String date = "";
+        Editable review;
+        int index = 0;
+        float rate;
+        for (int i = 0; i < watchedMovies.size(); i++) {
+            if(chosenItem.equals(watchedMovies.get(i).mName)){
+                System.out.println(watchedMovies.get(i).mName + " " + watchedMovies.get(i).date);
+                //date = watchedMovies.get(i).date;
+                index = i;
+                break;
+            }
+        }
+        if(watchedMovies.get(index).review.equals("")){
+            reviewText.setText("Write your review here!");
+        }else{
+            reviewText.setText(watchedMovies.get(index).review);
+        }
+        if(watchedMovies.get(index).rate == 0){
+            rateStars.setText("Your rating will appear here");
+        }else{
+            ratingBar.setRating(watchedMovies.get(index).rate);
+        }
     }
     
     public void saveRatings(View v){
+        System.out.println("EKA save");
         String date = "";
         Editable review;
         int index = 0;
@@ -88,13 +133,16 @@ public class Review extends AppCompatActivity {
             if(chosenItem.equals(watchedMovies.get(i).mName)){
                 date = watchedMovies.get(i).date;
                 index = i;
-                break;
             }
         }
         rate = ratingBar.getRating();
         review = reviewText.getText();
         String review1 = String.valueOf(review);
+        System.out.println("##### SAve ratings" + rate + " " + review + " " + chosenItem);
         watchedMovies.set(index, new ReviewList(chosenItem, date, rate, review1));
+
+        ratingBar.setRating(0);
+        reviewText.setText("");
     }
 
 }
