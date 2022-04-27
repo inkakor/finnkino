@@ -204,6 +204,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putStringArrayList("movies", movies);
+        outState.putSerializable("watchedmovies", watchedMovies);
+    }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState){
+        movies = savedInstanceState.getStringArrayList("movies");
+        watchedMovies = (ArrayList<ReviewList>) savedInstanceState.getSerializable("watchedmovies");
+    }
+
     //liittyy sivupalkkiin..
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -246,7 +258,10 @@ Prints movies to ListView*/
         Editable chosenDate = editTextDate.getText();
         String chosenDate1 = String.valueOf(chosenDate);
         watchedMovies.add(new ReviewList(chosenMovie1, chosenDate1, numberReview, writtenReview));
-        movies.add(chosenMovie1);
+        if(!movies.contains(chosenMovie1)){
+            movies.add(chosenMovie1);
+        }
+
         //Nää vois viedä johonkin metodiin, jossa movies menee spinneriin, ja sit watchedMovies muihin tietoihin.
         //Printtaaminen ja tallentaminen if (.equals()) homman kautta
 
