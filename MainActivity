@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         context = MainActivity.this;
 
-        System.out.println("KANSION SIJAINTI " + context.getFilesDir());
+        System.out.println("KANSION SIJAINTI 2 " + context.getFilesDir());
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
+/*
     @Override
     protected void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
         movies = savedInstanceState.getStringArrayList("movies");
         watchedMovies = (ArrayList<ReviewList>) savedInstanceState.getSerializable("watchedmovies");
     }
-
+ */
     //liittyy sivupalkkiin..
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -262,18 +262,7 @@ Prints movies to ListView*/
             movies.add(chosenMovie1);
         }
 
-        //Nää vois viedä johonkin metodiin, jossa movies menee spinneriin, ja sit watchedMovies muihin tietoihin.
-        //Printtaaminen ja tallentaminen if (.equals()) homman kautta
-
     }
-
-    /*public void sendList(View v){
-        Intent intent1 = new Intent(MainActivity.this, Review.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("movies", movies);
-        intent1.putExtras(bundle);
-        startActivity(intent1);
-    }*/
 
     /*Checks if movies shown on chosen date are archived. If not, then adds them to a file.*/
 
