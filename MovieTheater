@@ -1,4 +1,4 @@
-package com.example.viikko9pt2;
+package com.example.harjoitustyoolio;
 
 import android.text.Editable;
 
@@ -18,15 +18,15 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-public class MovieTheater {
-    ArrayList<MovieTheaterInformation> movieTheaters = new ArrayList<>();
+// inkan koodissa tää MovieTheater
+public class Theatres {
+    ArrayList<TheatreList> movieTheaters = new ArrayList<>();
     ArrayList<String> movieList = new ArrayList<>();
     private String name = "";
     private String id = "";
     private String movieName = "";
     private String movieTime = "";
-    public MovieTheater(){
-    }
+    public Theatres(){}
 
     public void readXML(){
         try {
@@ -46,10 +46,9 @@ public class MovieTheater {
                     Element element = (Element) node;
                     id = element.getElementsByTagName("ID").item(0).getTextContent();
                     name = element.getElementsByTagName("Name").item(0).getTextContent();
-                    //movieTheaters.add(new MovieTheater(name, id));
                     if(name.contains(":")) {
                         //movieTheaters.add(new MovieTheaterInformation(name, id));
-                        movieTheaters.add(new MovieTheaterInformation(name, id));
+                        movieTheaters.add(new TheatreList(name, id));
                     }
                 }
             }
@@ -89,7 +88,7 @@ public class MovieTheater {
                     //System.out.println(movieID);
                     movieName = element.getElementsByTagName("Title").item(0).getTextContent();
                     movieTime = element.getElementsByTagName("dttmShowStart").item(0).getTextContent();
-                    
+
                     //Parses time = removes seconds etc.
                     String time_movie = movieTime.substring(movieTime.length() - 8, movieTime.length() - 3);
 
@@ -99,7 +98,7 @@ public class MovieTheater {
                     Date t1 = sdf.parse(String.valueOf(time));
                     Date t2 = sdf.parse(time_movie);
 
-                    //If user's time is before movie time, movie is added to the list 
+                    //If user's time is before movie time, movie is added to the list
                     if(t1.before(t2)){
                         s1 = movieName + "    " + time_movie;
                         movieList.add(s1);
@@ -115,4 +114,7 @@ public class MovieTheater {
         }
     }
 
+
 }
+
+
