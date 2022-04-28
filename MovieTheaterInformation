@@ -1,12 +1,11 @@
-package com.example.viikko9pt2;
+package com.example.harjoitustyoolio;
 
 import java.util.ArrayList;
 
-public class MovieTheaterInformation {
+public class TheatreList {
     public String id;
     public String name;
-    ArrayList<String > movieList = new ArrayList<>();
-    public MovieTheaterInformation(String name, String id){
+    public TheatreList(String name, String id){
         this.name = name;
         this.id = id;
     }
@@ -15,5 +14,4 @@ public class MovieTheaterInformation {
     public String toString() {
         return name;
     }
-
 }
