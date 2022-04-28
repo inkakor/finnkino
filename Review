@@ -3,10 +3,8 @@ package com.example.harjoitustyoolio;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
@@ -26,9 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
 
 public class Review extends AppCompatActivity {
     ArrayList<ReviewList > watchedMovies = new ArrayList<>();
@@ -64,11 +59,11 @@ public class Review extends AppCompatActivity {
         Bundle bundleObject = getIntent().getExtras();
         movies = (ArrayList<String>) bundleObject.getSerializable("movies");
         watchedMovies = (ArrayList<ReviewList>) bundleObject.getSerializable("watchedmovies");
-        
+
         if(!movies.isEmpty()){
             saveToFile();
         }
-       
+
         if(!file.isEmpty()){
             System.out.println("TIEDOSTO EI OLE TYHJÄ");
             readFile();
@@ -112,7 +107,7 @@ public class Review extends AppCompatActivity {
 
          */
     }
-    
+
     //Presents ratings in käyttöliittymä/näyttö??
 
     public void setRatings(View v){
@@ -146,7 +141,7 @@ public class Review extends AppCompatActivity {
             ratingBar.setRating(watchedMovies.get(index).rate);
         }
     }
-    
+
     //Saves ratings.
     public void saveRatings(View v){
         String date = "";
@@ -170,10 +165,10 @@ public class Review extends AppCompatActivity {
         ratingBar.setRating(0);
         reviewText.setText("");
     }
-    
-        /*Eli ensin luen movies listasta (tulee MainActivitystä) elokuvat tiedostoon, johon ne tallennetaan. Samalla tarkastan että onko 
+
+        /*Eli ensin luen movies listasta (tulee MainActivitystä) elokuvat tiedostoon, johon ne tallennetaan. Samalla tarkastan että onko
     elokuva jo tiedostossa, jos on, niin en lisää. Sitten spinneriin päätyy moviesSpinner lista, johon on lisätty tiedostossa olevat elokuvat.
-    
+
     eli movies -> tiedosto -> moviesSpinner
     */
     
@@ -241,7 +236,7 @@ public class Review extends AppCompatActivity {
         }
         return n;
     }
-    
+
     //Saves watchedMovies to file
 
     public void saveAllToFile(String chosenItem, String date, float rate, String review){
